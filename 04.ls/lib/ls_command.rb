@@ -10,6 +10,14 @@ class LsCommand
 
   def check_current_directory
     puts @current_directory
+    screen_in_the_directory
+  end
+
+  def screen_in_the_directory
+    Dir.foreach(@current_directory) do |item|
+      next if item == '.' or item == '..'
+      puts item
+    end
   end
 
 end
