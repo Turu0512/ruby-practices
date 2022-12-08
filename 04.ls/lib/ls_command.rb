@@ -1,37 +1,40 @@
+# frozen_string_literal: true
+
 class LsCommand
-  def initialize()
+  def initialize
     @current_directory = Dir.getwd
-    @files = Array.new
+    @files = []
   end
-  
+
   def run
-    files = get_list
+    files = make_list
     screen_list = list_to_show(files)
     screen_in_the_directory(screen_list)
   end
 
-  def get_list
+  def make_list
     Dir.foreach(@current_directory) do |item|
-      next if item == '.' or item == '..'
+      next if item.include?('.') || item.include?('..')
+
       @files.push(item)
     end
-    @files.sort!
+    @files.sort
   end
 
   def list_to_show(files)
     # 列の数を指定する。
     columuns = 3
-    max_rows = if files.size % columuns == 0
-      files.size / columuns
-    else
-        (files.size / columuns) + 1
-    end
+    max_rows = if (files.size % columuns).zero?
+                 files.size / columuns
+               else
+                 (files.size / columuns) + 1
+               end
 
-    split_files = columuns.times.map do |i|
+    Array.new(columuns) do |i|
       if i.zero?
         files.slice(0, max_rows)
       else
-        files.slice((max_rows) * i,max_rows)
+        files.slice(max_rows * i, max_rows)
       end
     end
   end
@@ -40,9 +43,7 @@ class LsCommand
     # 一番長い文字列のsizeを取得
     max_file_name_len = 1
     @files.each do |file|
-      if file.size >= max_file_name_len
-        max_file_name_len = file.size
-      end
+      max_file_name_len = file.size if file.size >= max_file_name_len
     end
 
     output_files_list = (0..list[0].size).map do |i|
@@ -53,7 +54,6 @@ class LsCommand
     end
     puts output_files_list
   end
-
 end
 
 LsCommand.new.run
