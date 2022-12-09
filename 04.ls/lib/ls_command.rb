@@ -23,14 +23,14 @@ class LsCommand
 
   def list_to_show(files)
     # 列の数を指定する。
-    columuns = 3
-    max_rows = if (files.size % columuns).zero?
-                 files.size / columuns
+    column = 3
+    max_rows = if (files.size % column).zero?
+                 files.size / column
                else
-                 (files.size / columuns) + 1
+                 (files.size / column) + 1
                end
 
-    Array.new(columuns) do |i|
+    Array.new(column) do |i|
       if i.zero?
         files.slice(0, max_rows)
       else
