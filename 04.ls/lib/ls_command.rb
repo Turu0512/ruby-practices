@@ -14,7 +14,7 @@ class LsCommand
 
   def make_list
     Dir.foreach(@current_directory) do |item|
-      next if item.include?('.') || item.include?('..')
+      next if item.start_with?('.') || item.start_with?('..')
 
       @files.push(item)
     end
