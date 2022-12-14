@@ -31,11 +31,7 @@ class LsCommand
                end
 
     Array.new(COLUMN) do |i|
-      if i.zero?
-        files.slice(0, max_rows)
-      else
-        files.slice(max_rows * i, max_rows)
-      end
+      files.slice(max_rows * i, max_rows)
     end
   end
 
