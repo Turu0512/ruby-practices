@@ -39,11 +39,8 @@ class LsCommand
     # 一番長い文字列のsizeを取得
     max_file_name_len = 1
     list.each do |files|
-      files.each do |file|
-        max_file_name_len = file.size if file.size >= max_file_name_len
-      end
+      max_file_name_len = files.max_by(&:size).size if files.max_by(&:size).size >= max_file_name_len
     end
-
     output_files_list = (0..list[0].size).map do |i|
       output_file = list.map do |file_array|
         file_array[i]&.ljust(max_file_name_len + 3)
