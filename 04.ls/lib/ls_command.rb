@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class LsCommand
+  COLUMN = 3
   def initialize
     @current_directory = Dir.getwd
   end
@@ -23,14 +24,13 @@ class LsCommand
 
   def list_to_show(files)
     # 列の数を指定する。
-    column = 3
-    max_rows = if (files.size % column).zero?
-                 files.size / column
+    max_rows = if (files.size % COLUMN).zero?
+                 files.size / COLUMN
                else
-                 (files.size / column) + 1
+                 (files.size / COLUMN) + 1
                end
 
-    Array.new(column) do |i|
+    Array.new(COLUMN) do |i|
       if i.zero?
         files.slice(0, max_rows)
       else
