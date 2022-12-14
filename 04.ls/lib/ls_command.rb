@@ -3,7 +3,6 @@
 class LsCommand
   def initialize
     @current_directory = Dir.getwd
-    @files = []
   end
 
   def run
@@ -13,12 +12,13 @@ class LsCommand
   end
 
   def make_list
+    files = []
     Dir.foreach(@current_directory) do |item|
-      next if item.start_with?('.') || item.start_with?('..')
+      next if item.start_with?('.', '..')
 
-      @files.push(item)
+      files.push(item)
     end
-    @files.sort
+    files.sort
   end
 
   def list_to_show(files)
@@ -42,8 +42,10 @@ class LsCommand
   def screen_in_the_directory(list)
     # 一番長い文字列のsizeを取得
     max_file_name_len = 1
-    @files.each do |file|
-      max_file_name_len = file.size if file.size >= max_file_name_len
+    list.each do |files|
+      files.each do |file|
+        max_file_name_len = file.size if file.size >= max_file_name_len
+      end
     end
 
     output_files_list = (0..list[0].size).map do |i|
