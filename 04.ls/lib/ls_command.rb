@@ -25,7 +25,7 @@ class LsCommand
   def list_to_show(files)
     # 列の数を指定する。
     max_rows, mod = files.size.divmod(COLUMN)
-    max_rows += 1 if mod.zero?
+    max_rows += 1 unless mod.zero?
 
     Array.new(COLUMN) do |i|
       files.slice(max_rows * i, max_rows)
