@@ -8,20 +8,17 @@ class LsCommand
 
   def run
     case ARGV.join
-      when /^-.*[a-zA-Z]/
-      files = make_list
-      screen_list = list_to_show(files)
-      screen_in_the_directory(screen_list, files)
-      when ""
-      files = make_list
-      screen_list = list_to_show(files)
-      screen_in_the_directory(screen_list, files)
+      when /^-.*[a-zA-Z]/,""
+        option = ARGV.join
+        files = make_list(option)
+        screen_list = list_to_show(files)
+        screen_in_the_directory(screen_list, files)
       else
         p "無効なオプションです"
     end
   end
 
-  def make_list
+  def make_list(option)
     files = []
     Dir.foreach(@current_directory) do |item|
       if !option.include?('a')
