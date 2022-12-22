@@ -7,16 +7,26 @@ class LsCommand
   end
 
   def run
-    files = make_list
-    screen_list = list_to_show(files)
-    screen_in_the_directory(screen_list, files)
+    case ARGV.join
+      when /^-.*[a-zA-Z]/
+      files = make_list
+      screen_list = list_to_show(files)
+      screen_in_the_directory(screen_list, files)
+      when ""
+      files = make_list
+      screen_list = list_to_show(files)
+      screen_in_the_directory(screen_list, files)
+      else
+        p "無効なオプションです"
+    end
   end
 
   def make_list
     files = []
     Dir.foreach(@current_directory) do |item|
+      if !option.include?('a')
       next if item.start_with?('.', '..')
-
+      end
       files.push(item)
     end
     files.sort
