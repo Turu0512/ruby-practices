@@ -11,7 +11,7 @@ class LsCommand
   def run
     opt = OptionParser.new
     option = {}
-    opt.on('-a') { |a| a }
+    opt.on('-a')
     opt.parse(ARGV, into: option)
     files = make_list(option)
     screen_list = list_to_show(files)
