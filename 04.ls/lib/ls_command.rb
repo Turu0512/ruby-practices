@@ -30,8 +30,8 @@ class LsCommand
 
   def list_to_show(files)
     max_rows = max_rows(files)
-    run_count = files.size <= COLUMN ? files.size : COLUMN # nilが入るのを防ぐために実行回数を制限
-    Array.new(run_count) do |i|
+    list_length = [files.size, COLUMN].min
+    Array.new(list_length) do |i|
       files.slice(max_rows * i, max_rows)
     end
   end
