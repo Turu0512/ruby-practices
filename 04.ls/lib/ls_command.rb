@@ -21,7 +21,7 @@ class LsCommand
   def make_list(option)
     files = []
     Dir.foreach(@current_directory) do |item|
-      next if !option[:a] == true && item.start_with?('.', '..')
+      next if !option[:a] && item.start_with?('.', '..')
 
       files.push(item)
     end
