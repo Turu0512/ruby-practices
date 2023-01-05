@@ -13,19 +13,19 @@ class LsCommand
     option = {}
     opt.on('-r')
     opt.parse(ARGV, into: option)
-    files = make_list(option)
+    files = make_list(option[:r])
     screen_list = list_to_show(files)
     screen_in_the_directory(screen_list, files)
   end
 
-  def make_list(option)
+  def make_list(option_reverse)
     files = []
     Dir.foreach(@current_directory) do |item|
       next if item.start_with?('.', '..')
 
       files.push(item)
     end
-    option[:r] ? files.sort.reverse : files.sort
+    option_reverse ? files.sort.reverse : files.sort
   end
 
   def list_to_show(files)
