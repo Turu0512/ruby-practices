@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'optparse'
+
 class LsCommand
   COLUMN = 3
   def initialize
@@ -7,19 +9,23 @@ class LsCommand
   end
 
   def run
-    files = make_list
+    opt = OptionParser.new
+    option = {}
+    opt.on('-r')
+    opt.parse(ARGV, into: option)
+    files = make_list(option[:r])
     screen_list = list_to_show(files)
     screen_in_the_directory(screen_list, files)
   end
 
-  def make_list
+  def make_list(option_reverse)
     files = []
     Dir.foreach(@current_directory) do |item|
       next if item.start_with?('.', '..')
 
       files.push(item)
     end
-    files.sort
+    option_reverse ? files.sort.reverse : files.sort
   end
 
   def list_to_show(files)
@@ -34,8 +40,7 @@ class LsCommand
     spacing_between_files = spacing_between_files(list)
     max_rows = max_rows(files)
     # 配列の長さを揃えて、transposeする
-    align_list_length = list.map {
-      |item| item + [nil] * (max_rows - item.length) }.transpose
+    align_list_length = list.map { |item| item + [nil] * (max_rows - item.length) }.transpose
     # 空白を追加してjoinする
     output_files_list = align_list_length.map do |array|
       array.map do |file1|
@@ -56,7 +61,6 @@ class LsCommand
     # 出力したファイル名の間隔を決定する
     (list.flatten.map(&:size) + [1]).max + 3
   end
-
 end
 
 LsCommand.new.run
